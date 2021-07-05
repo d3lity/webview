@@ -65,6 +65,7 @@ WEBVIEW_API void *webview_get_window(webview_t w);
 
 // Updates the title of the native window. Must be called from the UI thread.
 WEBVIEW_API void webview_set_title(webview_t w, const char *title);
+WEBVIEW_API void webview_set_fullscreen(webview_t w, const int fullscreen);
 
 // Window size hints
 #define WEBVIEW_HINT_NONE 0  // Width and height are default size
@@ -515,6 +516,13 @@ public:
 
   void set_title(const std::string title) {
     gtk_window_set_title(GTK_WINDOW(m_window), title.c_str());
+  }
+   void set_fullscreen(const int fullscreen) {
+      if (fullscreen) {
+    gtk_window_fullscreen(GTK_WINDOW(m_window));
+  } else {
+    gtk_window_unfullscreen(GTK_WINDOW(m_window));
+  }
   }
 
   void set_size(int width, int height, int hints) {
@@ -1328,6 +1336,9 @@ WEBVIEW_API void *webview_get_window(webview_t w) {
 
 WEBVIEW_API void webview_set_title(webview_t w, const char *title) {
   static_cast<webview::webview *>(w)->set_title(title);
+}
+WEBVIEW_API void webview_set_fullscreen(webview_t w, int fullscreen) {
+  static_cast<webview::webview *>(w)->set_fullscreen(fullscreen);  
 }
 
 WEBVIEW_API void webview_set_size(webview_t w, int width, int height,
